@@ -1,24 +1,23 @@
-var fs          = require('fs');
-var request     = require('request');
+var fs = require('fs');
+var request = require('request');
 var parseString = require('xml2js').parseString;
-var unixTime    = require('unix-time');
-var cheerio     = require ('cheerio');
+var unixTime = require('unix-time');
+var cheerio = require ('cheerio');
 
-var games, liveGames, liveMatchid, jsonArray, numgames;
+var liveGames, liveMatchid, jsonArray, numgames;
 
 updateGames();
 setInterval(updateGames, 60000); //check games every 2:30 minutes
 
 function updateGames() {
     liveGames = [];
-    games = [];
     liveMatchid = [];
     jsonArray = [];
     
     numgames = 0;
     
     console.log();
-    console.log("---------------------");
+    console.log('---------------------');
     console.log();
     
     request('http://www.hltv.org/hltv.rss.php?pri=15', function(error, response, body) {
@@ -35,20 +34,20 @@ function updateGames() {
                                 $ = cheerio.load(body);
                             
                                 var html  = $('.hotmatchbox').text();
-                                var html2 = $('.text-center', '.hotmatchbox').text().trim().split(" ").clean("");
-                                var patt  = new RegExp("matchid = ([0-9]*)");
+                                var html2 = $('.text-center', '.hotmatchbox').text().trim().split(' ').clean('');
+                                var patt  = new RegExp('matchid = ([0-9]*)');
                                 
                                 if (/matchid = [0-9]*/.test(html) && html2.length >= 10) {
                                     numgames++;
                                     
                                     var matchid = patt.exec(html)[1];
                                 
-                                    console.log(game.title[0] + " >>> " + matchid);
+                                    console.log(game.title[0] + ' >>> ' + matchid);
                                     
                                     liveMatchid.push(matchid);
                                     
                                     jsonArray.push({
-                                        teams: [game.title[0].split(" vs ")[0], game.title[0].split(" vs ")[1]],
+                                        teams: [game.title[0].split(' vs ')[0], game.title[0].split(' vs ')[1]],
                                         matchid: matchid,
                                         players: [[html2[0], html2[1], html2[2], html2[3], html2[4]], [html2[5], html2[6], html2[7], html2[8], html2[9]]],
                                         unix_start: unixTime(game.pubDate[0]),
@@ -61,7 +60,7 @@ function updateGames() {
                                         if (err) throw err;
                                     });
                                 } else {
-                                    console.log(game.title[0] + " >>> NO MATCHID");
+                                    console.log(game.title[0] + ' >>> NO MATCHID');
                                 }
                             }
                         });
