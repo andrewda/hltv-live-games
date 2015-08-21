@@ -1,13 +1,13 @@
-var fs = require('fs');
-var request = require('request');
+var fs          = require('fs');
+var request     = require('request');
 var parseString = require('xml2js').parseString;
-var unixTime = require('unix-time');
-var cheerio = require ('cheerio');
+var unixTime    = require('unix-time');
+var cheerio     = require ('cheerio');
 
 var games, liveGames, liveMatchid, jsonArray, numgames;
 
 updateGames();
-setInterval(updateGames, 60000); // check games every minute
+setInterval(updateGames, 60000); //check games every 2:30 minutes
 
 function updateGames() {
     liveGames = [];
@@ -68,11 +68,13 @@ function updateGames() {
                     }
                 });
                 
-                if (numgames == 0) {
-                    fs.writeFile('games.json', '{ "nogames": true }', function (err) {
-                        if (err) throw err;
-                    });
-                }
+                setTimeout(function() {
+                    if (numgames == 0) {
+                        fs.writeFile('games.json', '{ "nogames": true }', function (err) {
+                            if (err) throw err;
+                        });
+                    }
+                }, 2000);
                 console.log();
             });
         }
