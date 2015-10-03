@@ -16,9 +16,7 @@ function updateGames() {
     
     numgames = 0;
     
-    console.log();
-    console.log('---------------------');
-    console.log();
+    console.log('\n---------------------\n');
     
     request('http://www.hltv.org/hltv.rss.php?pri=15', function(error, response, body) {
         if (!error && response.statusCode == 200) {
@@ -73,7 +71,7 @@ function updateGames() {
                             if (err) throw err;
                         });
                     }
-                }, 2000);
+                }, 3000);
                 console.log();
             });
         }
