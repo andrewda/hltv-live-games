@@ -7,7 +7,7 @@ var cheerio = require ('cheerio');
 var liveGames, liveMatchid, jsonArray, numgames;
 
 updateGames();
-setInterval(updateGames, 60000); //check games every 2:30 minutes
+setInterval(updateGames, 30000); //check games every 30 seconds
 
 function updateGames() {
     liveGames = [];
