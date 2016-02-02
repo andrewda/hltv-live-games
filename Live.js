@@ -77,12 +77,12 @@ function getTime(UNIX_timestamp){
     var a = new Date(UNIX_timestamp * 1000);
     
     return {
-        year: a.getUTCFullYear(),
-        month: a.getUTCMonth() + 1,
-        date: a.getUTCDate(),
-        hour: a.getUTCHours(),
-        min: a.getUTCMinutes(),
-        sec: a.getUTCSeconds()
+        year: a.getFullYear(),
+        month: a.getMonth() + 1,
+        date: a.getDate(),
+        hour: a.getHours(),
+        min: a.getMinutes(),
+        sec: a.getSeconds()
     };
 }
 
