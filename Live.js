@@ -1,9 +1,9 @@
-var request = require('request');
-var parseString = require('xml2js').parseString;
-var unixTime = require('unix-time');
-var cheerio = require('cheerio');
-var EE = require('events').EventEmitter;
-var inherits = require('util').inherits;
+var request = require("request");
+var parseString = require("xml2js").parseString;
+var unixTime = require("unix-time");
+var cheerio = require("cheerio");
+var EE = require("events").EventEmitter;
+var inherits = require("util").inherits;
 
 var liveMatchid = [];
 var first = true;
@@ -25,7 +25,7 @@ function Live(options) {
 inherits(Live, EE);
 
 Live.prototype.pollGames = function() {
-    request('http://www.hltv.org/hltv.rss.php?pri=15', function(error, response, body) {
+    request("http://www.hltv.org/hltv.rss.php?pri=15", function(error, response, body) {
         if (!error && response.statusCode === 200) {
             parseString(body, function(err, result) {
                 if (err) throw err;
@@ -37,11 +37,11 @@ Live.prototype.pollGames = function() {
                                 if (!error && response.statusCode === 200) {
                                     $ = cheerio.load(body);
     
-                                    var html = $('.hotmatchbox').text();
-                                    var html2 = $('.text-center', '.hotmatchbox').text().trim().split(' ').clean('');
-                                    var midpatt = new RegExp('matchid = ([0-9]*)');
-                                    var lidpatt = new RegExp('listid = ([0-9]*)');
-                                    var boxpatt = new RegExp('Best of ([0-9]*)');
+                                    var html = $(".hotmatchbox").text();
+                                    var html2 = $(".text-center", ".hotmatchbox").text().trim().split(" ").clean("");
+                                    var midpatt = new RegExp("matchid = ([0-9]*)");
+                                    var lidpatt = new RegExp("listid = ([0-9]*)");
+                                    var boxpatt = new RegExp("Best of ([0-9]*)");
     
                                     if (/matchid = [0-9]*/.test(html) && html2.length >= 10) {
                                         var matchid = midpatt.exec(html)[1];
@@ -51,8 +51,8 @@ Live.prototype.pollGames = function() {
                                         if (liveMatchid.indexOf(matchid) === -1) {
                                             liveMatchid.push(matchid);
     
-                                            emit('newGame', {
-                                                teams: [game.title[0].split(' vs ')[0], game.title[0].split(' vs ')[1]],
+                                            emit("newGame", {
+                                                teams: [game.title[0].split(" vs ")[0], game.title[0].split(" vs ")[1]],
                                                 matchid: matchid,
                                                 listid: listid,
                                                 bestof: bestof,
@@ -77,9 +77,9 @@ Live.prototype.pollGames = function() {
                                 if (!error && response.statusCode == 200) {
                                     $ = cheerio.load(body);
     
-                                    var html = $('.hotmatchbox').text();
-                                    var html2 = $('.text-center', '.hotmatchbox').text().trim().split(' ').clean('');
-                                    var midpatt = new RegExp('matchid = ([0-9]*)');
+                                    var html = $(".hotmatchbox").text();
+                                    var html2 = $(".text-center", ".hotmatchbox").text().trim().split(" ").clean("");
+                                    var midpatt = new RegExp("matchid = ([0-9]*)");
     
                                     if (/matchid = [0-9]*/.test(html) && html2.length >= 10) {
                                         var matchid = midpatt.exec(html)[1];
