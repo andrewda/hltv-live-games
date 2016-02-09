@@ -26,15 +26,15 @@ inherits(Live, EE);
 
 Live.prototype.pollGames = function() {
     request('http://www.hltv.org/hltv.rss.php?pri=15', function(error, response, body) {
-        if (!error && response.statusCode == 200) {
+        if (!error && response.statusCode === 200) {
             parseString(body, function(err, result) {
                 if (err) throw err;
                 
                 if (!first) {
-                    result.rss.channel[0].item.forEach(function(game, index) {
+                    result.rss.channel[0].item.forEach(function(game) {
                         if (unixTime(game.pubDate[0]) - 180 <= unixTime(new Date())) {
                             request(game.link[0], function(error, response, body) {
-                                if (!error && response.statusCode == 200) {
+                                if (!error && response.statusCode === 200) {
                                     $ = cheerio.load(body);
     
                                     var html = $('.hotmatchbox').text();
@@ -119,7 +119,7 @@ function getTime(UNIX_timestamp) {
 
 Array.prototype.clean = function(deleteValue) {
     for (var i = 0; i < this.length; i++) {
-        if (this[i] == deleteValue) {
+        if (this[i] === deleteValue) {
             this.splice(i, 1);
             i--;
         }
