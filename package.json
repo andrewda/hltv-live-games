@@ -11,10 +11,11 @@
     "url": "https://github.com/andrewda/hltv-live-games"
   },
   "dependencies": {
+    "async": "^2.0.1",
+    "cheerio": "~0.19.0",
     "request": "~2.69.0",
-    "xml2js": "~0.4.16",
     "unix-time": "~1.0.1",
-    "cheerio": "~0.19.0"
+    "xml2js": "~0.4.16"
   },
   "keywords": [
     "hltv",
