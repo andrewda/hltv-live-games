@@ -1,6 +1,6 @@
 {
   "name": "hltv-live-games",
-  "version": "1.2.4",
+  "version": "1.3.0",
   "description": "Easily get data from HLTV games when they go live",
   "keywords": ["hltv", "live", "games"],
   "main": "Live.js",
