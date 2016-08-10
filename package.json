@@ -1,14 +1,18 @@
 {
   "name": "hltv-live-games",
   "version": "1.2.4",
-  "description": "Easily get data from HLTV games when they go live.",
+  "description": "Easily get data from HLTV games when they go live",
+  "keywords": ["hltv", "live", "games"],
   "main": "Live.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+  "license": "MIT",
+  "author": {
+    "name": "Andrew Dassonville",
+    "email": "dassonville.andrew@gmail.com",
+    "url": "http://drewbits.com"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/andrewda/hltv-live-games"
+    "url": "https://github.com/andrewda/hltv-live-games.git"
   },
   "dependencies": {
     "async": "^2.0.1",
@@ -17,15 +21,10 @@
     "unix-time": "~1.0.1",
     "xml2js": "~0.4.16"
   },
-  "keywords": [
-    "hltv",
-    "live",
-    "games"
-  ],
-  "author": "Andrew Dassonville",
-  "license": "MIT",
   "bugs": {
     "url": "https://github.com/andrewda/hltv-live-games/issues"
   },
-  "homepage": "https://github.com/andrewda/hltv-live-games"
+  "engines": {
+    "node": ">=4.1.1"
+  }
 }
