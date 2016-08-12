@@ -6,7 +6,7 @@ var cheerio = require("cheerio");
 var EE = require("events").EventEmitter;
 var inherits = require("util").inherits;
 
-var that;
+var self;
 
 function Live(options) {
     options = options || {};
@@ -19,7 +19,7 @@ function Live(options) {
     this.pollGames();
     setInterval(this.pollGames, this.pollTime);
 
-    that = this;
+    self = this;
 }
 
 inherits(Live, EE);
@@ -31,7 +31,7 @@ Live.prototype.pollGames = function() {
                 if (err) {
                     throw err;
                 } else {
-                    if (that.first) {
+                    if (self.first) {
                         result.rss.channel[0].item.forEach(function(game) {
                             if (unixTime(game.pubDate[0]) <= unixTime(new Date())) {
                                 request(game.link[0], function(error, response, body) {
@@ -45,8 +45,8 @@ Live.prototype.pollGames = function() {
                                         if (/matchid = [0-9]*/.test(html) && html2.length >= 10) {
                                             var matchid = midpatt.exec(html)[1];
 
-                                            if (that.liveMatchid.indexOf(matchid) === -1) {
-                                                that.liveMatchid.push(matchid);
+                                            if (self.liveMatchid.indexOf(matchid) === -1) {
+                                                self.liveMatchid.push(matchid);
                                             }
                                         }
                                     }
@@ -54,10 +54,10 @@ Live.prototype.pollGames = function() {
                             }
                         });
 
-                        that.first = false;
+                        self.first = false;
                     } else {
                         result.rss.channel[0].item.forEach(function(game) {
-                            if (unixTime(game.pubDate[0]) - 180 <= unixTime(new Date())) {
+                            if (unixTime(game.pubDate[0]) - 600 <= unixTime(new Date())) {
                                 request(game.link[0], function(error, response, body) {
                                     if (!error && response.statusCode === 200) {
                                         $ = cheerio.load(body);
@@ -73,8 +73,8 @@ Live.prototype.pollGames = function() {
                                             var listid = lidpatt.exec(html)[1];
                                             var bestof = boxpatt.exec(html)[1];
 
-                                            if (that.liveMatchid.indexOf(matchid) === -1) {
-                                                that.liveMatchid.push(matchid);
+                                            if (self.liveMatchid.indexOf(matchid) === -1) {
+                                                self.liveMatchid.push(matchid);
 
                                                 emit("newGame", {
                                                     teams: [game.title[0].split(" vs ")[0], game.title[0].split(" vs ")[1]],
@@ -108,7 +108,6 @@ Live.prototype.getLiveGames = function(callback) {
             request("http://www.hltv.org/hltv.rss.php?pri=15", function(error, response, body) {
                 if (!error && response.statusCode === 200) {
                     parseString(body, function(err, result) {
-                        console.log(result)
                         if (err) {
                             done(err);
                         } else {
@@ -137,27 +136,21 @@ Live.prototype.getLiveGames = function(callback) {
                                 var listid = lidpatt.exec(html)[1];
                                 var bestof = boxpatt.exec(html)[1];
 
-                                if (that.liveMatchid.indexOf(matchid) === -1) {
-                                    that.liveMatchid.push(matchid);
+                                games.push({
+                                    teams: [game.title[0].split(" vs ")[0], game.title[0].split(" vs ")[1]],
+                                    matchid: matchid,
+                                    listid: listid,
+                                    bestof: bestof,
+                                    time: getTime(unixTime(game.pubDate[0])),
+                                    players: [
+                                        [html2[0], html2[1], html2[2], html2[3], html2[4]],
+                                        [html2[5], html2[6], html2[7], html2[8], html2[9]]
+                                    ],
+                                    start_time: unixTime(game.pubDate[0]),
+                                    time_since_start: unixTime(new Date()) - unixTime(game.pubDate[0])
+                                });
 
-                                    games.push({
-                                        teams: [game.title[0].split(" vs ")[0], game.title[0].split(" vs ")[1]],
-                                        matchid: matchid,
-                                        listid: listid,
-                                        bestof: bestof,
-                                        time: getTime(unixTime(game.pubDate[0])),
-                                        players: [
-                                            [html2[0], html2[1], html2[2], html2[3], html2[4]],
-                                            [html2[5], html2[6], html2[7], html2[8], html2[9]]
-                                        ],
-                                        start_time: unixTime(game.pubDate[0]),
-                                        time_since_start: unixTime(new Date()) - unixTime(game.pubDate[0])
-                                    });
-
-                                    doneEach();
-                                } else {
-                                    doneEach();
-                                }
+                                doneEach();
                             } else {
                                 doneEach();
                             }
@@ -182,7 +175,7 @@ Live.prototype.getLiveGames = function(callback) {
 };
 
 function emit(event, message) {
-    that.emit(event, message);
+    self.emit(event, message);
 }
 
 function getTime(UNIX_timestamp) {
