@@ -25,11 +25,13 @@ function Live(options) {
 inherits(Live, EE);
 
 Live.prototype.pollGames = function() {
-    request("http://www.hltv.org/hltv.rss.php?pri=15", function(error, response, body) {
-        if (!error && response.statusCode === 200) {
+    request("http://www.hltv.org/hltv.rss.php?pri=15", function(err, response, body) {
+        if (!err && response.statusCode === 200) {
             parseString(body, function(err, result) {
                 if (err) {
-                    throw err;
+                    emit("debug", {
+                        error: err
+                    });
                 } else {
                     if (self.first) {
                         result.rss.channel[0].item.forEach(function(game) {
@@ -97,6 +99,11 @@ Live.prototype.pollGames = function() {
                         });
                     }
                 }
+            });
+        } else {
+            emit("debug", {
+                error: err,
+                status: response.statusCode
             });
         }
     });
