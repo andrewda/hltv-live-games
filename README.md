@@ -1,6 +1,7 @@
 # HLTV Live Games
 
-[![Codacy Badge](https://api.codacy.com/project/badge/grade/1c459a215964481fa286267a4ea9c98d)](https://www.codacy.com/app/dassonville-andrew/hltv-live-games)
+[![Codacy][codacy-img]][codacy-url]
+[![Steam Donate][steam-donate-img]][steam-donate-url]
 
 ## Introduction
 
@@ -27,3 +28,10 @@ Retrieve data on all live games.
 - `game` - The game object of the game which just went live.
 
 Emitted when HLTV's scorebot starts on a live game or game which will be live within the next 3 minutes.
+
+<!-- Badge URLs -->
+
+[codacy-img]:       https://img.shields.io/codacy/grade/1c459a215964481fa286267a4ea9c98d.svg?style=flat-square
+[codacy-url]:       https://www.codacy.com/app/dassonville-andrew/hltv-live-games
+[steam-donate-img]: https://img.shields.io/badge/donate-Steam-lightgrey.svg?style=flat-square
+[steam-donate-url]: https://steamcommunity.com/tradeoffer/new/?partner=132224795&token=HuEE9Mk1
