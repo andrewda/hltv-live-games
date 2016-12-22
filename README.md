@@ -5,9 +5,16 @@
 
 ## Introduction
 
-This module started off as a simple addition to hltv-livescore, making it simple to get information for live games. Since then it has evolved into a full and independent yet lightweight module which makes working with HLTV a breeze.
+This is an incredibly simple module which scrapes games from HLTV. More
+features may be added in the future.
 
 ## Usage
+
+### getLiveGames(secondary, callback)
+
+If `secondary` is truthy, another request will be made by `hltv-live-games` to
+get more information about the games (time and players). Otherwise, only one
+request will be made, making it much likely to get rate limited.
 
 ```js
 const getLiveGames = require('hltv-live-games');
