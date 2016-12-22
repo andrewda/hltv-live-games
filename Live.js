@@ -1,6 +1,6 @@
-var async = require("async");
-var request = require("request");
-var cheerio = require("cheerio");
+const async = require("async");
+const request = require("request");
+const cheerio = require("cheerio");
 
 module.exports = (secondary, callback) => {
 	if (typeof secondary === 'function') {
@@ -12,15 +12,15 @@ module.exports = (secondary, callback) => {
 		if (err || response.statusCode !== 200) {
 			callback(new Error(`Request failed: ${response.statusCode}`));
 		} else {
-			var $ = cheerio.load(body);
-			var $matches = $('.matchListBox').toArray();
+			const $ = cheerio.load(body);
+			const $matches = $('.matchListBox').toArray();
 
-			var updated = [];
+			const updated = [];
 
 			async.each($matches, (match, next) => {
-				var game = {};
+				const game = {};
 
-				var $b = cheerio.load(match);
+				const $b = cheerio.load(match);
 
 				switch ($b('.matchTimeCell').text()) {
 					case 'Finished':
@@ -45,7 +45,7 @@ module.exports = (secondary, callback) => {
 						if (err || response.statusCode !== 200) {
 							next(new Error(`Request failed: ${response.statusCode}`));
 						} else {
-							var $c = cheerio.load(body);
+							const $c = cheerio.load(body);
 
 							game.time = new Date(parseInt(body.match(/date: "([0-9]*)"/m)[1]));
 							game.players = $c('span[style*="font-size:12px"]').toArray().map((player) => {
