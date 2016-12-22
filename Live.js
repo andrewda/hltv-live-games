@@ -9,42 +9,42 @@ module.exports = (secondary, callback) => {
 	}
 
 	request('http://www.hltv.org/matches/', (err, response, body) => {
-	    if (err || response.statusCode !== 200) {
-	        callback(new Error(`Request failed: ${response.statusCode}`));
-	    } else {
-	        var $ = cheerio.load(body);
+		if (err || response.statusCode !== 200) {
+			callback(new Error(`Request failed: ${response.statusCode}`));
+		} else {
+			var $ = cheerio.load(body);
 			var $matches = $('.matchListBox').toArray();
 
 			var updated = [];
 
-	        async.each($matches, (match, next) => {
-	            var game = {};
+			async.each($matches, (match, next) => {
+				var game = {};
 
-	            var $b = cheerio.load(match);
+				var $b = cheerio.load(match);
 
-				switch($b('.matchTimeCell').text()) {
-	            case 'Finished':
-	                game.status = 'finished';
-	                break;
-	            case 'LIVE':
-	                game.status = 'live';
-	                break;
-	            default:
-	                game.status = 'upcoming';
-	            }
+				switch ($b('.matchTimeCell').text()) {
+					case 'Finished':
+						game.status = 'finished';
+						break;
+					case 'LIVE':
+						game.status = 'live';
+						break;
+					default:
+						game.status = 'upcoming';
+				}
 
 				game.format = parseInt($b('.matchScoreCell').text().match(/Best of ([0-9]*)/)[1]);
-	            game.link = `http://www.hltv.org${$b('.matchActionCell').html().match(/"(.*)"/)[1]}`;
-	            game.teams = [
-	                $b('.matchTeam1Cell').text().trim(),
-	                $b('.matchTeam2Cell').text().trim()
-	            ];
+				game.link = `http://www.hltv.org${$b('.matchActionCell').html().match(/"(.*)"/)[1]}`;
+				game.teams = [
+					$b('.matchTeam1Cell').text().trim(),
+					$b('.matchTeam2Cell').text().trim()
+				];
 
 				if (secondary) {
 					request(game.link, (err, response, body) => {
 						if (err || response.statusCode !== 200) {
-					        next(new Error(`Request failed: ${response.statusCode}`));
-					    } else {
+							next(new Error(`Request failed: ${response.statusCode}`));
+						} else {
 							var $c = cheerio.load(body);
 
 							game.time = new Date(parseInt(body.match(/date: "([0-9]*)"/m)[1]));
@@ -62,13 +62,13 @@ module.exports = (secondary, callback) => {
 
 					next();
 				}
-	        }, (err) => {
+			}, (err) => {
 				if (err) {
 					callback(err);
 				} else {
 					callback(updated);
 				}
 			});
-	    }
+		}
 	});
 };
