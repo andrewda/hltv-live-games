@@ -1,5 +1,7 @@
 # HLTV Live Games
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/andrewda/hltv-live-games.svg)](https://greenkeeper.io/)
+
 [![Codacy][codacy-img]][codacy-url]
 [![Steam Donate][steam-donate-img]][steam-donate-url]
 
